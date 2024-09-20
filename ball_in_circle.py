@@ -37,14 +37,31 @@ def draw_ball():
   
   turtle.update()
 
-ball_hspd = 1
-ball_vspd = 2
+def solve_theta():
+  if(ball.ycor() == 0 and ball.xcor() < 0):
+    theta = 1
+  elif(ball.ycor() == 0 and ball.xcor() > 0):
+    theta = -1
+  elif(ball.ycor() == 0 and ball.xcor() == 0):
+    theta = math.atan(d_orgin)
+  else:
+    theta = math.atan(ball.xcor() / ball.ycor())
+  
+  return theta
+
+ball_hspd = -7
+ball_vspd = 10
+
+d_orgin = math.sqrt((ball.xcor() ** 2) + (ball.ycor() ** 2))
+theta = solve_theta()
 
 def move_ball():
   global ball_hspd, ball_vspd
-  if(math.sqrt((ball.xcor() ** 2) + (ball.ycor() ** 2)) >= 255):
-    ball_hspd = -ball_hspd
-    ball_vspd = -ball_vspd
+  if(d_orgin >= 255):
+    if(0 < theta < 180):
+      ball_vspd = -1 * math.abs(ball_vspd)
+    elif(180 < theta < 360):
+      ball_vspd = math.abs(ball_vspd)
   return 0
 
 #Main Loop
@@ -58,5 +75,9 @@ while(True):
   ball.goto(ball.xcor() + ball_hspd, ball.ycor() + ball_vspd)
   
   t += 1
+  ball_vspd -= t * .05
+  d_orgin =  math.sqrt((ball.xcor() ** 2) + (ball.ycor() ** 2))
+  theta = math.atan(ball.xcor() / ball.ycor())
+  
   if(t > 255):
     break
