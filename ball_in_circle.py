@@ -50,7 +50,7 @@ def solve_theta():
   return theta
 
 ball_hspd = -7
-ball_vspd = 10
+ball_vspd = 2
 
 d_orgin = math.sqrt((ball.xcor() ** 2) + (ball.ycor() ** 2))
 theta = solve_theta()
@@ -59,9 +59,13 @@ def move_ball():
   global ball_hspd, ball_vspd
   if(d_orgin >= 255):
     if(0 < theta < 180):
-      ball_vspd = -1 * math.abs(ball_vspd)
+      ball_vspd *= -1
+      #ball_vspd = -1 * math.abs(ball_vspd)
     elif(180 < theta < 360):
-      ball_vspd = math.abs(ball_vspd)
+      ball_vspd *= -1
+      #ball_vspd = math.abs(ball_vspd)
+    ball_hspd *= -1
+
   return 0
 
 #Main Loop
