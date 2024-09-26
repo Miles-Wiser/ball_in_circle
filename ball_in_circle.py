@@ -1,10 +1,10 @@
-import turtle
-import math
+import turtle as tl
+import math as mt
 
 #Draw Border
-border = turtle.Turtle()
+border = tl.Turtle()
 border.ht()
-turtle.tracer(0)
+tl.tracer(0)
 
 def draw_circle():
   border.penup()
@@ -14,12 +14,12 @@ def draw_circle():
     border.fd(35.5)
     border.left(8)
   
-  turtle.update()
+  tl.update()
   
-  return (35.5 / math.sin(math.radians(8)))
+  return (35.5 / mt.sin(mt.radians(8)))
 
 #Create Ball
-ball = turtle.Turtle()
+ball = tl.Turtle()
 ball.ht()
 ball.penup()
 
@@ -35,53 +35,34 @@ def draw_ball():
   ball.end_fill()
   ball.penup()
   
-  turtle.update()
+  tl.update()
 
 def solve_theta():
-  if(ball.ycor() == 0 and ball.xcor() < 0):
-    theta = 1
-  elif(ball.ycor() == 0 and ball.xcor() > 0):
-    theta = -1
-  elif(ball.ycor() == 0 and ball.xcor() == 0):
-    theta = math.atan(d_orgin)
-  else:
-    theta = math.atan(ball.xcor() / ball.ycor())
-  
-  return theta
+  return mt.degrees(mt.atan(ball.xcor() / ball.ycor()))
 
-ball_hspd = -7
-ball_vspd = 2
-
-d_orgin = math.sqrt((ball.xcor() ** 2) + (ball.ycor() ** 2))
-theta = solve_theta()
-
-def move_ball():
-  global ball_hspd, ball_vspd
-  if(d_orgin >= 255):
-    if(0 < theta < 180):
-      ball_vspd *= -1
-      #ball_vspd = -1 * math.abs(ball_vspd)
-    elif(180 < theta < 360):
-      ball_vspd *= -1
-      #ball_vspd = math.abs(ball_vspd)
-    ball_hspd *= -1
-
-  return 0
 
 #Main Loop
 radius = draw_circle()
 
-t = 0
+hspd = 8
+vspd = .00001
 
-while(True):
+while True:
   draw_ball()
-  move_ball()
-  ball.goto(ball.xcor() + ball_hspd, ball.ycor() + ball_vspd)
-  
-  t += 1
-  ball_vspd -= t * .05
-  d_orgin =  math.sqrt((ball.xcor() ** 2) + (ball.ycor() ** 2))
-  theta = math.atan(ball.xcor() / ball.ycor())
-  
-  if(t > 255):
+  ball.goto(ball.xcor() + hspd, ball.ycor() + vspd)
+  if mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2) > 255:
+    theta = solve_theta()
+    if 0 < theta < 90 and hspd > 0:
+      hspd = -1 * abs(hspd)
+      vspd = -1 * abs(vspd)
+    elif 0 < theta < 90 and hspd < 0:
+      hspd = abs(hspd)
+      vspd = abs(vspd)
+    elif -90 < theta < 0 and hspd > 0:
+      hspd = -1 * abs(hspd)
+      vspd = abs(vspd)
+    elif -90 < theta < 0 and hspd < 0:
+      hspd = abs(hspd)
+      vspd = -1 * abs(vspd)
+  if mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2) > 305:
     break
