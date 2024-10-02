@@ -44,8 +44,8 @@ def solve_theta():
 #Main Loop
 radius = draw_circle()
 
-hspd = 2
-vspd = 16
+hspd = 12
+vspd = 8
 
 t = 0
 while True:
@@ -55,16 +55,18 @@ while True:
   #Checks which quadrant edge the ball hits and adjusts velocities
   if mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2) > radius:
     theta = solve_theta()
-    if 0 < theta < 90 and hspd > 0:
+    if 0 < theta < 90 and hspd > 0:			#Quadrant 1
       hspd = -1 * abs(hspd)
       vspd = -1 * abs(vspd)
-    elif 0 < theta < 90 and hspd < 0:
+    elif 0 < theta < 90 and hspd < 0:		#Quadrant 4
       hspd = abs(hspd)
       vspd = abs(vspd)
-    elif -90 < theta < 0 and hspd > 0:
+      t = 0
+    elif -90 < theta < 0 and hspd > 0:	#Quadrant 3
       hspd = -1 * abs(hspd)
       vspd = abs(vspd)
-    elif -90 < theta < 0 and hspd < 0:
+      t = 0
+    elif -90 < theta < 0 and hspd < 0:	#Quadrant 2
       hspd = abs(hspd)
       vspd = -1 * abs(vspd)
     
