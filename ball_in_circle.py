@@ -44,13 +44,16 @@ def solve_theta():
 #Main Loop
 radius = draw_circle()
 
-hspd = 8
-vspd = .00001
+hspd = 2
+vspd = 16
 
+t = 0
 while True:
   draw_ball()
-  ball.goto(ball.xcor() + hspd, ball.ycor() + vspd)
-  if mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2) > 255:
+  ball.goto(ball.xcor() + hspd, ball.ycor() + vspd + t)
+  
+  #Checks which quadrant edge the ball hits and adjusts velocities
+  if mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2) > radius:
     theta = solve_theta()
     if 0 < theta < 90 and hspd > 0:
       hspd = -1 * abs(hspd)
@@ -64,5 +67,10 @@ while True:
     elif -90 < theta < 0 and hspd < 0:
       hspd = abs(hspd)
       vspd = -1 * abs(vspd)
-  if mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2) > 305:
-    break
+    
+    #Moves the ball to the edge of the circle
+    temp_x = radius * (ball.xcor() / mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2))
+    temp_y = radius * (ball.ycor() / mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2))
+    ball.goto(temp_x, temp_y)
+    
+  t -= .0981
