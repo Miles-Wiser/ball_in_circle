@@ -24,10 +24,10 @@ ball.ht()
 ball.penup()
 
 def draw_ball():
-  ball.clear()
+  #ball.clear()
   
   ball.pendown()
-  ball.fillcolor("blue")
+  ball.fillcolor(abs(hspd) * .92, abs(vspd) * 4.6, abs(t) * 19)
   ball.begin_fill()
   for c in range(15):
     ball.fd(5)
@@ -44,17 +44,22 @@ def solve_theta():
 #Main Loop
 radius = draw_circle()
 
-hspd = 12
-vspd = 8
+hspd = 260
+vspd = 30
 
 t = 0
 while True:
   draw_ball()
-  ball.goto(ball.xcor() + hspd, ball.ycor() + vspd + t)
+  ball.goto(ball.xcor() + hspd/2, ball.ycor() + vspd/2 + t)
   
   #Checks which quadrant edge the ball hits and adjusts velocities
   if mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2) > radius:
     theta = solve_theta()
+    
+    #Represents drag, friction, heat loss, ect.
+    hspd *= .99
+    vspd *= .99
+    
     if 0 < theta < 90 and hspd > 0:			#Quadrant 1
       hspd = -1 * abs(hspd)
       vspd = -1 * abs(vspd)
@@ -75,4 +80,10 @@ while True:
     temp_y = radius * (ball.ycor() / mt.sqrt(ball.xcor() ** 2 + ball.ycor() ** 2))
     ball.goto(temp_x, temp_y)
     
-  t -= .0981
+  t -= .981
+  
+  #Once ball comes to a rest, end loop.
+  if -0.1 < hspd < 0.1 and -0.1 < vspd < 0.1:
+    ball.clear()
+    tl.update()
+    break
